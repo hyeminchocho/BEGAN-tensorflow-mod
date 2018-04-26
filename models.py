@@ -12,6 +12,7 @@ def GeneratorCNN(z, hidden_num, output_num, repeat_num, data_format, reuse):
         # x = reshape(x, 8, 8, hidden_num, data_format)
         x = reshape(x, 135, 185, hidden_num, data_format)
         print("MEEE reshape x: " + str(x))
+        print("MEEE repeat_num: " + repeat_num)
 
 
         for idx in range(repeat_num):
