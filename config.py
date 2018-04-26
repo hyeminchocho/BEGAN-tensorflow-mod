@@ -18,7 +18,8 @@ net_arg.add_argument('--input_scale_size', type=int, default=64,
                      help='input image will be resized with the given value as width and height')
 net_arg.add_argument('--conv_hidden_num', type=int, default=128,
                      choices=[64, 128],help='n in the paper')
-net_arg.add_argument('--z_num', type=int, default=64, choices=[64, 128])
+# net_arg.add_argument('--z_num', type=int, default=64, choices=[64, 128])
+net_arg.add_argument('--z_num', type=int, default=64)
 
 # Data
 data_arg = add_argument_group('Data')
@@ -61,8 +62,9 @@ misc_arg.add_argument('--random_seed', type=int, default=123)
 def get_config():
     config, unparsed = parser.parse_known_args()
     if config.use_gpu:
-        data_format = 'NCHW'
+        data_format = 'NHWC' #'NCHW' MEEE
     else:
         data_format = 'NHWC'
+        print("YEASSS C later!")
     setattr(config, 'data_format', data_format)
     return config, unparsed

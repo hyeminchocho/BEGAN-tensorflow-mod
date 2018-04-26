@@ -15,7 +15,7 @@ def get_loader(root, batch_size, scale_size, data_format, split=None, is_graysca
             tf_decode = tf.image.decode_jpeg
         elif ext == "png":
             tf_decode = tf.image.decode_png
-        
+
         if len(paths) != 0:
             break
 
@@ -44,7 +44,15 @@ def get_loader(root, batch_size, scale_size, data_format, split=None, is_graysca
         queue = tf.image.crop_to_bounding_box(queue, 50, 25, 128, 128)
         queue = tf.image.resize_nearest_neighbor(queue, [scale_size, scale_size])
     else:
-        queue = tf.image.resize_nearest_neighbor(queue, [scale_size, scale_size])
+        # Height always scales to scale_size
+        shape = queue[0].get_shape().as_list()
+        image_width = shape[1]
+        image_height = shape[0]
+        # scaled_width = int((scale_size * image_width)/float(image_height))
+        scaled_width = 112
+        print("MEEE! scaled: " + str([scale_size, scaled_width]))
+        queue = tf.image.resize_nearest_neighbor(queue, [scale_size, scaled_width])
+        # queue = tf.image.resize_nearest_neighbor(queue, [scale_size, scale_size])
 
     if data_format == 'NCHW':
         queue = tf.transpose(queue, [0, 3, 1, 2])

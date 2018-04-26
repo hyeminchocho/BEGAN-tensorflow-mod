@@ -170,6 +170,9 @@ class Trainer(object):
         self.x = self.data_loader
         x = norm_img(self.x)
 
+        print("MEEE shapex0: " +  str(tf.shape(x)));
+        print("MEEE znum: " + str(self.z_num))
+
         self.z = tf.random_uniform(
                 (tf.shape(x)[0], self.z_num), minval=-1.0, maxval=1.0)
         self.k_t = tf.Variable(0., trainable=False, name='k_t')
@@ -177,11 +180,16 @@ class Trainer(object):
         G, self.G_var = GeneratorCNN(
                 self.z, self.conv_hidden_num, self.channel,
                 self.repeat_num, self.data_format, reuse=False)
+        print("MEEE z is: " + str(self.z))
+
+        print("build model MEEE G: " + str(G) + " x: " + str(x))
 
         d_out, self.D_z, self.D_var = DiscriminatorCNN(
                 tf.concat([G, x], 0), self.channel, self.z_num, self.repeat_num,
                 self.conv_hidden_num, self.data_format)
         AE_G, AE_x = tf.split(d_out, 2)
+        print("d_out: " + str(d_out))
+        print("AE_G: " + str(AE_G) + " AE_x: " +  str(AE_x))
 
         self.G = denorm_img(G, self.data_format)
         self.AE_G, self.AE_x = denorm_img(AE_G, self.data_format), denorm_img(AE_x, self.data_format)
@@ -193,6 +201,7 @@ class Trainer(object):
 
         g_optimizer, d_optimizer = optimizer(self.g_lr), optimizer(self.d_lr)
 
+        print("MEE reduce passed")
         self.d_loss_real = tf.reduce_mean(tf.abs(AE_x - x))
         self.d_loss_fake = tf.reduce_mean(tf.abs(AE_G - G))
 
@@ -259,8 +268,8 @@ class Trainer(object):
         for key, img in items.items():
             if img is None:
                 continue
-            if img.shape[3] in [1, 3]:
-                img = img.transpose([0, 3, 1, 2])
+            # if img.shape[3] in [1, 3]:
+            #     img = img.transpose([0, 3, 1, 2])
 
             x_path = os.path.join(path, '{}_D_{}.png'.format(idx, key))
             x = self.sess.run(self.AE_x, {self.x: img})
