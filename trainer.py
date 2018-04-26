@@ -109,6 +109,7 @@ class Trainer(object):
         gpu_options = tf.GPUOptions(allow_growth=True)
         sess_config = tf.ConfigProto(allow_soft_placement=True,
                                     gpu_options=gpu_options)
+        sess_config.gpu_options.per_process_gpu_memory_fraction = 0.8 # MEEE
 
         self.sess = sv.prepare_or_wait_for_session(config=sess_config)
 
