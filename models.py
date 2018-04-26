@@ -52,7 +52,7 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
         num_output = int(np.prod([8, 11, hidden_num])) # MEEEEE
         x = slim.fully_connected(x, num_output, activation_fn=None)
         # x = reshape(x, 8, 8, hidden_num, data_format)
-        x = reshape(x, 135, 185, hidden_num, data_format) # MEEEEE
+        x = reshape(x, 8, 11, hidden_num, data_format) # MEEEEE
 
         for idx in range(repeat_num):
             x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
