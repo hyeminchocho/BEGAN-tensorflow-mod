@@ -51,8 +51,8 @@ def get_loader(root, batch_size, scale_size, data_format, split=None, is_graysca
         image_width = shape[1]
         image_height = shape[0]
         # scaled_width = int((scale_size * image_width)/float(image_height))
-        scaled_height = int(1024/8) # MEEE
-        scaled_width = int(1408/8) # MEEE
+        scaled_height = int(1024/16) # MEEE
+        scaled_width = int(1408/16) # MEEE
         print("MEEE! scaled: " + str([scale_size, scaled_width]))
         queue = tf.image.resize_nearest_neighbor(queue, [scaled_height, scaled_width]) # MEEE
         # queue = tf.image.resize_nearest_neighbor(queue, [scale_size, scale_size])
