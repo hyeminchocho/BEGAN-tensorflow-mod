@@ -35,7 +35,7 @@ def prepare_dirs_and_logger(config):
         config.model_dir = os.path.join(config.log_dir, config.model_name)
     config.data_path = os.path.join(config.data_dir, config.dataset)
 
-    print("MEEE LogDir: " + config.log_dir + " dataDir: " + config.data_dir, " model_dir: " + config.model_dir)
+    print("MEEE LogDir: " + config.log_dir + " dataDir: " + config.data_dir, " model_dir: " + config.model_dir + " dataPath: " + confib.data_path)
     for path in [config.log_dir, config.data_dir, config.model_dir]:
         if not os.path.exists(path):
             os.makedirs(path)
