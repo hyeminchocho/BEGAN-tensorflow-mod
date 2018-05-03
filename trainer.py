@@ -358,7 +358,6 @@ class Trainer(object):
 
     def get_image_from_loader(self):
         x = self.data_loader.eval(session=self.sess)
-        print("eval x: " + str(x))
         if self.data_format == 'NCHW':
             x = x.transpose([0, 2, 3, 1])
         return x

@@ -36,6 +36,7 @@ def main(config):
     else:
         if not config.load_path:
             raise Exception("[!] You should specify `load_path` to load a pretrained model")
+        print("MEEE load_path check error: " + config.load_path)
         trainer.test()
 
 if __name__ == "__main__":
