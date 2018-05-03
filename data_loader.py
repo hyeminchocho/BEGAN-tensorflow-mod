@@ -9,6 +9,7 @@ def get_loader(root, batch_size, scale_size, data_format, split=None, is_graysca
         root = os.path.join(root, 'splits', split)
 
     print("Dataset_name MEEE:: " + dataset_name)
+    print("Root MEEE: " + root)
 
     for ext in ["jpg", "png"]:
         paths = glob("{}/*.{}".format(root, ext))
