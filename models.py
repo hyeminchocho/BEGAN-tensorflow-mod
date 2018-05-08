@@ -46,7 +46,7 @@ def GeneratorCNN(z, hidden_num, output_num, repeat_num, data_format, reuse):
 
         stage_name = "3"
         weights_name = "GenCNN/Weights" + stage_name
-        kernel = tf.Variable(tf.truncated_normal([3, 3, 64, 3], dtype=tf.float32, stddev=1e-1), name=weights_name)
+        kernel = tf.Variable(tf.truncated_normal([3, 3, 128, 3], dtype=tf.float32, stddev=1e-1), name=weights_name)
         x = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
         # biases_name = "GenCNN/Biases" + stage_name
         # biases = tf.Variable(tf.constant(0.0, shape=[channel_num], dtype=tf.float32), trainable=True, name=biases_name)
