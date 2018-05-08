@@ -24,7 +24,7 @@ def GeneratorCNN(z, hidden_num, output_num, repeat_num, data_format, reuse):
             conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
             biases_name = "GenCNN/Biases" + stage_name
             biases = tf.Variable(tf.constant(0.0, shape=[hidden_num], dtype=tf.float32), trainable=True, name=biases_name)
-            bias = tf.nn.bias_add(conv, biases)
+            bias = tf.nn.bias_add(conv, biases, data_format=data_format)
             conv_name = "GenCNN/Conv" + stage_name
             x = tf.nn.elu(bias, name=conv_name)
 
