@@ -273,6 +273,7 @@ class Trainer(object):
 
             x_path = os.path.join(path, '{}_D_{}.png'.format(idx, key))
             x = self.sess.run(self.AE_x, {self.x: img})
+            print("MEEE image: " + str(img))
             save_image(x, x_path)
             print("[*] Samples saved: {}".format(x_path))
 
