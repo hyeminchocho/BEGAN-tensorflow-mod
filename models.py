@@ -37,10 +37,38 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
         prev_channel_num = hidden_num
         for idx in range(repeat_num):
             channel_num = hidden_num * (idx + 1)
-            x = slim.conv2d(x, channel_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
-            x = slim.conv2d(x, channel_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
+            # x = slim.conv2d(x, channel_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
+            stage_name = idx + "_1"
+            weights_name = "Encode/Weights" + stage_name
+            kernel = tf.Variable(tf.truncated_normal([3, 3, 64, channel_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
+            conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
+            biases_name = "Encode/Biases" + stage_name
+            biases = tf.Variable(tf.constant(0.0, shape=[channel_num], dtype=tf.float32), trainable=True, name=biases_name)
+            bias = tf.nn.bias_add(conv, biases)
+            conv_name = "Encode/Conv" + stage_name
+            x = tf.nn.relu(bias, name=conv_name)
+            # MEEEE ---------
+            # x = slim.conv2d(x, channel_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
+            stage_name = idx + "_2"
+            weights_name = "Encode/Weights" + stage_name
+            kernel = tf.Variable(tf.truncated_normal([3, 3, 64, channel_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
+            conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
+            biases_name = "Encode/Biases" + stage_name
+            biases = tf.Variable(tf.constant(0.0, shape=[channel_num], dtype=tf.float32), trainable=True, name=biases_name)
+            bias = tf.nn.bias_add(conv, biases)
+            conv_name = "Encode/Conv" + stage_name
+            x = tf.nn.relu(bias, name=conv_name)
             if idx < repeat_num - 1:
-                x = slim.conv2d(x, channel_num, 3, 2, activation_fn=tf.nn.elu, data_format=data_format)
+                # x = slim.conv2d(x, channel_num, 3, 2, activation_fn=tf.nn.elu, data_format=data_format)
+                stage_name = idx + "_3"
+                weights_name = "Encode/Weights" + stage_name
+                kernel = tf.Variable(tf.truncated_normal([3, 3, 64, channel_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
+                conv = tf.nn.conv2d(x, kernel, [2, 2, 2, 2], padding='SAME', data_format=data_format)
+                biases_name = "Encode/Biases" + stage_name
+                biases = tf.Variable(tf.constant(0.0, shape=[channel_num], dtype=tf.float32), trainable=True, name=biases_name)
+                bias = tf.nn.bias_add(conv, biases)
+                conv_name = "Encode/Conv" + stage_name
+                x = tf.nn.relu(bias, name=conv_name)
                 #x = tf.contrib.layers.max_pool2d(x, [2, 2], [2, 2], padding='VALID')
 
         # x = tf.reshape(x, [-1, np.prod([8, 8, channel_num])])
@@ -55,12 +83,39 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
         x = reshape(x, 8, 11, hidden_num, data_format) # MEEEEE
 
         for idx in range(repeat_num):
-            x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
-            x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
+            # x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
+            # MEEEE
+            stage_name = idx + "_1"
+            weights_name = "Decode/Weights" + stage_name
+            kernel = tf.Variable(tf.truncated_normal([3, 3, 64, hidden_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
+            conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
+            biases_name = "Decode/Biases" + stage_name
+            biases = tf.Variable(tf.constant(0.0, shape=[hidden_num], dtype=tf.float32), trainable=True, name=biases_name)
+            bias = tf.nn.bias_add(conv, biases)
+            conv_name = "Decode/Conv" + stage_name
+            x = tf.nn.relu(bias, name=conv_name)
+
+            # x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
+            stage_name = idx + "_2"
+            weights_name = "Decode/Weights" + stage_name
+            kernel = tf.Variable(tf.truncated_normal([3, 3, 64, hidden_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
+            conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
+            biases_name = "Decode/Biases" + stage_name
+            biases = tf.Variable(tf.constant(0.0, shape=[hidden_num], dtype=tf.float32), trainable=True, name=biases_name)
+            bias = tf.nn.bias_add(conv, biases)
+            conv_name = "Decode/Conv" + stage_name
+            x = tf.nn.relu(bias, name=conv_name)
             if idx < repeat_num - 1:
                 x = upscale(x, 2, data_format)
 
-        out = slim.conv2d(x, input_channel, 3, 1, activation_fn=None, data_format=data_format)
+        stage_name = idx + "_2"
+        weights_name = "Decode/Weights" + stage_name
+        kernel = tf.Variable(tf.truncated_normal([3, 3, 64, input_channel], dtype=tf.float32, stddev=1e-1), name=weights_name)
+        x = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
+        biases_name = "Decode/Biases" + stage_name
+        biases = tf.Variable(tf.constant(0.0, shape=[input_channel], dtype=tf.float32), trainable=True, name=biases_name)
+        bias = tf.nn.bias_add(x, biases)
+        # out = slim.conv2d(x, input_channel, 3, 1, activation_fn=None, data_format=data_format)
 
     variables = tf.contrib.framework.get_variables(vs)
     return out, z, variables
