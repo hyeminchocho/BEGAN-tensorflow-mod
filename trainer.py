@@ -359,6 +359,9 @@ class Trainer(object):
 
     def get_image_from_loader(self):
         x = self.data_loader.eval(session=self.sess)
+        print("MEEE Before transpose: " + x.shape)
         if self.data_format == 'NCHW':
+            print("MEEE transposing")
             x = x.transpose([0, 2, 3, 1])
+            print("MEEE after transpose: " + x.shape)
         return x
