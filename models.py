@@ -20,10 +20,10 @@ def GeneratorCNN(z, hidden_num, output_num, repeat_num, data_format, reuse):
             print("first conv: " + str(x))
             stage_name = str(idx) + "_1"
             weights_name = "GenCNN/Weights" + stage_name
-            kernel = tf.Variable(tf.truncated_normal([3, 3, 64, hidden_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
+            kernel = tf.Variable(tf.truncated_normal([3, 3, hidden_num, 128], dtype=tf.float32, stddev=1e-1), name=weights_name)
             conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
             biases_name = "GenCNN/Biases" + stage_name
-            biases = tf.Variable(tf.constant(0.0, shape=[channel_num], dtype=tf.float32), trainable=True, name=biases_name)
+            biases = tf.Variable(tf.constant(0.0, shape=[hidden_num], dtype=tf.float32), trainable=True, name=biases_name)
             bias = tf.nn.bias_add(conv, biases)
             conv_name = "GenCNN/Conv" + stage_name
             x = tf.nn.elu(bias, name=conv_name)
