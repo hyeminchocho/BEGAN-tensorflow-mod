@@ -38,7 +38,7 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
         for idx in range(repeat_num):
             channel_num = hidden_num * (idx + 1)
             # x = slim.conv2d(x, channel_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
-            stage_name = idx + "_1"
+            stage_name = str(idx) + "_1"
             weights_name = "Encode/Weights" + stage_name
             kernel = tf.Variable(tf.truncated_normal([3, 3, 64, channel_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
             conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
@@ -49,7 +49,7 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
             x = tf.nn.relu(bias, name=conv_name)
             # MEEEE ---------
             # x = slim.conv2d(x, channel_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
-            stage_name = idx + "_2"
+            stage_name = str(idx) + "_2"
             weights_name = "Encode/Weights" + stage_name
             kernel = tf.Variable(tf.truncated_normal([3, 3, 64, channel_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
             conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
@@ -60,7 +60,7 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
             x = tf.nn.relu(bias, name=conv_name)
             if idx < repeat_num - 1:
                 # x = slim.conv2d(x, channel_num, 3, 2, activation_fn=tf.nn.elu, data_format=data_format)
-                stage_name = idx + "_3"
+                stage_name = str(idx) + "_3"
                 weights_name = "Encode/Weights" + stage_name
                 kernel = tf.Variable(tf.truncated_normal([3, 3, 64, channel_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
                 conv = tf.nn.conv2d(x, kernel, [2, 2, 2, 2], padding='SAME', data_format=data_format)
@@ -85,7 +85,7 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
         for idx in range(repeat_num):
             # x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
             # MEEEE
-            stage_name = idx + "_1"
+            stage_name = str(idx) + "_1"
             weights_name = "Decode/Weights" + stage_name
             kernel = tf.Variable(tf.truncated_normal([3, 3, 64, hidden_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
             conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
@@ -96,7 +96,7 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
             x = tf.nn.relu(bias, name=conv_name)
 
             # x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
-            stage_name = idx + "_2"
+            stage_name = str(idx) + "_2"
             weights_name = "Decode/Weights" + stage_name
             kernel = tf.Variable(tf.truncated_normal([3, 3, 64, hidden_num], dtype=tf.float32, stddev=1e-1), name=weights_name)
             conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
@@ -108,7 +108,7 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
             if idx < repeat_num - 1:
                 x = upscale(x, 2, data_format)
 
-        stage_name = idx + "_2"
+        stage_name = str(idx) + "_2"
         weights_name = "Decode/Weights" + stage_name
         kernel = tf.Variable(tf.truncated_normal([3, 3, 64, input_channel], dtype=tf.float32, stddev=1e-1), name=weights_name)
         x = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
