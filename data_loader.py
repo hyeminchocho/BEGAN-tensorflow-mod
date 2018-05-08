@@ -61,6 +61,7 @@ def get_loader(root, batch_size, scale_size, data_format, split=None, is_graysca
     if data_format == 'NCHW':
         print("MEEE yes! load image NCHW!")
         queue = tf.transpose(queue, [0, 3, 1, 2])
+        print("MEE shape queue: " + str(queue.shape))
     elif data_format == 'NHWC':
         pass
     else:
