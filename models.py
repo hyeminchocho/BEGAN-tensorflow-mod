@@ -16,44 +16,69 @@ def GeneratorCNN(z, hidden_num, output_num, repeat_num, data_format, reuse):
 
 
         for idx in range(repeat_num):
-            # x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
+            x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
             print("first conv: " + str(x))
-            stage_name = str(idx) + "_1"
-            weights_name = "GenCNN/Weights" + stage_name
-            kernel = tf.Variable(tf.truncated_normal([3, 3, hidden_num, 128], dtype=tf.float32, stddev=1e-1), name=weights_name)
-            conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
-            biases_name = "GenCNN/Biases" + stage_name
-            biases = tf.Variable(tf.constant(0.0, shape=[hidden_num], dtype=tf.float32), trainable=True, name=biases_name)
-            bias = tf.nn.bias_add(conv, biases, data_format=data_format)
-            conv_name = "GenCNN/Conv" + stage_name
-            x = tf.nn.elu(bias, name=conv_name)
-
-            # x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
-            stage_name = str(idx) + "_2"
-            weights_name = "GenCNN/Weights" + stage_name
-            kernel = tf.Variable(tf.truncated_normal([3, 3, hidden_num, 128], dtype=tf.float32, stddev=1e-1), name=weights_name)
-            conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
-            biases_name = "GenCNN/Biases" + stage_name
-            biases = tf.Variable(tf.constant(0.0, shape=[hidden_num], dtype=tf.float32), trainable=True, name=biases_name)
-            bias = tf.nn.bias_add(conv, biases, data_format=data_format)
-            conv_name = "GenCNN/Conv" + stage_name
-            x = tf.nn.elu(bias, name=conv_name)
+            x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
             print("second conv: " + str(x))
             if idx < repeat_num - 1:
                 x = upscale(x, 2, data_format)
                 print("upscale: " + str(x))
 
+        out = slim.conv2d(x, 3, 3, 1, activation_fn=None, data_format=data_format)
 
-        stage_name = "3"
-        weights_name = "GenCNN/Weights" + stage_name
-        kernel = tf.Variable(tf.truncated_normal([3, 3, 128, 3], dtype=tf.float32, stddev=1e-1), name=weights_name)
-        x = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='SAME', data_format=data_format)
-        # biases_name = "GenCNN/Biases" + stage_name
-        # biases = tf.Variable(tf.constant(0.0, shape=[channel_num], dtype=tf.float32), trainable=True, name=biases_name)
-        # bias = tf.nn.bias_add(conv, biases)
-        # conv_name = "GenCNN/Conv" + stage_name
-        # x = tf.nn.elu(bias, name=conv_name)
-        out = x
+    variables = tf.contrib.framework.get_variables(vs)
+    return out, variables
+    # with tf.variable_scope("G", reuse=reuse) as vs:
+    #     print("in GenCNN z: " + str(z))
+    #     # num_output = int(np.prod([8, 8, hidden_num]))
+    #     num_output = int(np.prod([8, 11, hidden_num])) # MEEEE
+    #     x = slim.fully_connected(z, num_output, activation_fn=None)
+    #     print("MEEE x: " + str(x))
+    #     # x = reshape(x, 8, 8, hidden_num, data_format)
+    #     x = reshape(x, 8, 11, hidden_num, data_format)
+    #     print("MEEE reshape x: " + str(x))
+    #     print("MEEE repeat_num: " + str(repeat_num))
+    #
+    #
+    #     for idx in range(repeat_num):
+    #         # x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
+    #         print("first conv: " + str(x))
+    #         stage_name = str(idx) + "_1"
+    #         weights_name = "GenCNN/Weights" + stage_name
+    #         kernel_1 = tf.Variable(tf.truncated_normal([3, 3, hidden_num, 128], dtype=tf.float32, stddev=1e-1), name=weights_name)
+    #         conv = tf.nn.conv2d(x, kernel_1, [1, 1, 1, 1], padding='SAME', data_format=data_format)
+    #         biases_name = "GenCNN/Biases" + stage_name
+    #         biases = tf.Variable(tf.constant(0.0, shape=[hidden_num], dtype=tf.float32), trainable=True, name=biases_name)
+    #         bias = tf.nn.bias_add(conv, biases, data_format=data_format)
+    #         conv_name = "GenCNN/Conv" + stage_name
+    #         x = tf.nn.elu(bias, name=conv_name)
+    #
+    #         # x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
+    #         stage_name = str(idx) + "_2"
+    #         weights_name = "GenCNN/Weights" + stage_name
+    #         kernel_2 = tf.Variable(tf.truncated_normal([3, 3, hidden_num, 128], dtype=tf.float32, stddev=1e-1), name=weights_name)
+    #         conv = tf.nn.conv2d(x, kernel_2, [1, 1, 1, 1], padding='SAME', data_format=data_format)
+    #         biases_name = "GenCNN/Biases" + stage_name
+    #         biases = tf.Variable(tf.constant(0.0, shape=[hidden_num], dtype=tf.float32), trainable=True, name=biases_name)
+    #         bias = tf.nn.bias_add(conv, biases, data_format=data_format)
+    #         conv_name = "GenCNN/Conv" + stage_name
+    #         x = tf.nn.elu(bias, name=conv_name)
+    #         print("second conv: " + str(x))
+    #         if idx < repeat_num - 1:
+    #             x = upscale(x, 2, data_format)
+    #             print("upscale: " + str(x))
+    #
+    #
+    #     stage_name = "3"
+    #     weights_name = "GenCNN/Weights" + stage_name
+    #     kernel_3 = tf.Variable(tf.truncated_normal([3, 3, 128, 3], dtype=tf.float32, stddev=1e-1), name=weights_name)
+    #     x = tf.nn.conv2d(x, kernel_3, [1, 1, 1, 1], padding='SAME', data_format=data_format)
+    #     # biases_name = "GenCNN/Biases" + stage_name
+    #     # biases = tf.Variable(tf.constant(0.0, shape=[channel_num], dtype=tf.float32), trainable=True, name=biases_name)
+    #     # bias = tf.nn.bias_add(conv, biases)
+    #     # conv_name = "GenCNN/Conv" + stage_name
+    #     # x = tf.nn.elu(bias, name=conv_name)
+    #     out = x
         # out = slim.conv2d(x, 3, 3, 1, activation_fn=None, data_format=data_format)
 
     variables = tf.contrib.framework.get_variables(vs)
