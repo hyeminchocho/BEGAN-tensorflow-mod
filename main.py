@@ -27,7 +27,7 @@ def main(config):
 
     data_loader = get_loader(
             data_path, config.batch_size, config.input_scale_size,
-            config.data_format, config.split)
+            config.data_format, config.split, is_square=config.is_square)
     trainer = Trainer(config, data_loader)
 
     if config.is_train:

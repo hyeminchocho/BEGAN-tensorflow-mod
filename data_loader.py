@@ -3,7 +3,7 @@ from PIL import Image
 from glob import glob
 import tensorflow as tf
 
-def get_loader(root, batch_size, scale_size, data_format, split=None, is_grayscale=False, seed=None):
+def get_loader(root, batch_size, scale_size, data_format, split=None, is_grayscale=False, seed=None, is_square=False):
     dataset_name = os.path.basename(root)
     if dataset_name in ['CelebA'] and split:
         root = os.path.join(root, 'splits', split)
@@ -54,8 +54,11 @@ def get_loader(root, batch_size, scale_size, data_format, split=None, is_graysca
         # scaled_width = int((scale_size * image_width)/float(image_height))
         scaled_height = int(1024/16) # MEEE
         scaled_width = int(1408/16) # MEEE
-        print("MEEE! scaled: " + str([scale_size, scaled_width]))
-        queue = tf.image.resize_nearest_neighbor(queue, [scaled_height, scaled_width]) # MEEE
+        if is_square:
+            queue = tf.image.resize_nearest_neighbor(queue, [scale_size, scale_size]) # MEEE
+        else:
+            print("MEEE! scaled: " + str([scale_size, scaled_width]))
+            queue = tf.image.resize_nearest_neighbor(queue, [scaled_height, scaled_width]) # MEEE
         # queue = tf.image.resize_nearest_neighbor(queue, [scale_size, scale_size])
 
     if data_format == 'NCHW':
