@@ -311,9 +311,6 @@ class Trainer(object):
             z_r_loss, _ = self.sess.run([self.z_r_loss, self.z_r_optim], {self.x: tf_real_batch})
         z = self.sess.run(self.z_r)
 
-        print("MEEE z in interp: " + str(z.shape))
-        save_image(z, os.path.join(root_path, 'test{}_zzz.png'.format(step)))
-
         z1, z2 = z[:half_batch_size], z[half_batch_size:]
         real1_batch, real2_batch = real_batch[:half_batch_size], real_batch[half_batch_size:]
 
