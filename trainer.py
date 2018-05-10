@@ -210,6 +210,7 @@ class Trainer(object):
                 self.ConvWeights = var
             if var.name == "G/Conv_1/weights":
                 self.Conv1Weights = var
+        print("MEEE conv weights: " + str(self.ConvWeights) + " conv1: " + str(self.Conv1Weights))
 
 
         print("MEE reduce passed")
