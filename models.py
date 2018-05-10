@@ -2,15 +2,23 @@ import numpy as np
 import tensorflow as tf
 slim = tf.contrib.slim
 
-def GeneratorCNN(z, hidden_num, output_num, repeat_num, data_format, reuse):
+def GeneratorCNN(z, hidden_num, output_num, repeat_num, data_format, reuse, is_square=False):
     with tf.variable_scope("G", reuse=reuse) as vs:
         print("in GenCNN z: " + str(z))
         # num_output = int(np.prod([8, 8, hidden_num]))
-        num_output = int(np.prod([8, 11, hidden_num])) # MEEEE
+        if is_square:
+            num_output = int(np.prod([8, 8, hidden_num])) # MEEEE
+        else:
+            num_output = int(np.prod([8, 11, hidden_num])) # MEEEE
+
         x = slim.fully_connected(z, num_output, activation_fn=None)
         print("MEEE x: " + str(x))
         # x = reshape(x, 8, 8, hidden_num, data_format)
-        x = reshape(x, 8, 11, hidden_num, data_format)
+        if is_square:
+            x = reshape(x, 8, 8, hidden_num, data_format)
+        else:
+            x = reshape(x, 8, 11, hidden_num, data_format)
+
         print("MEEE reshape x: " + str(x))
         print("MEEE repeat_num: " + str(repeat_num))
 
@@ -84,7 +92,7 @@ def GeneratorCNN(z, hidden_num, output_num, repeat_num, data_format, reuse):
     variables = tf.contrib.framework.get_variables(vs)
     return out, variables
 
-def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_format):
+def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_format, is_square=False):
     with tf.variable_scope("D") as vs:
         # Encoder
         x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
@@ -98,13 +106,24 @@ def DiscriminatorCNN(x, input_channel, z_num, repeat_num, hidden_num, data_forma
                 x = slim.conv2d(x, channel_num, 3, 2, activation_fn=tf.nn.elu, data_format=data_format)
                 #x = tf.contrib.layers.max_pool2d(x, [2, 2], [2, 2], padding='VALID')
 
-        x = tf.reshape(x, [-1, np.prod([8, 11, channel_num])])
+        if is_square:
+            x = tf.reshape(x, [-1, np.prod([8, 8, channel_num])])
+        else:
+            x = tf.reshape(x, [-1, np.prod([8, 11, channel_num])])
         z = x = slim.fully_connected(x, z_num, activation_fn=None)
 
         # Decoder
-        num_output = int(np.prod([8, 11, hidden_num]))
+        if is_square:
+            num_output = int(np.prod([8, 8, hidden_num]))
+        else:
+            num_output = int(np.prod([8, 11, hidden_num]))
+
         x = slim.fully_connected(x, num_output, activation_fn=None)
-        x = reshape(x, 8, 11, hidden_num, data_format)
+        if is_square:
+            x = reshape(x, 8, 8, hidden_num, data_format)
+        else:
+            x = reshape(x, 8, 11, hidden_num, data_format)
+
 
         for idx in range(repeat_num):
             x = slim.conv2d(x, hidden_num, 3, 1, activation_fn=tf.nn.elu, data_format=data_format)
