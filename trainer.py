@@ -203,8 +203,8 @@ class Trainer(object):
         g_optimizer, d_optimizer = optimizer(self.g_lr), optimizer(self.d_lr)
 
         # Kernels
-        self.ConvWeights = null
-        self.Conv1Weights = null
+        self.ConvWeights = None
+        self.Conv1Weights = None
         for var in self.G_var:
             if var.name == "G/Conv/weights":
                 self.ConvWeights = var
