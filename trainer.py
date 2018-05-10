@@ -176,10 +176,10 @@ class Trainer(object):
         self.z = tf.random_uniform(
                 (tf.shape(x)[0], self.z_num), minval=-1.0, maxval=1.0)
         self.k_t = tf.Variable(0., trainable=False, name='k_t')
-
+        print("MEEE is square!: " + str(self.config.is_square))
         G, self.G_var = GeneratorCNN(
                 self.z, self.conv_hidden_num, self.channel,
-                self.repeat_num, self.data_format, reuse=False)
+                self.repeat_num, self.data_format, reuse=False, is_square=self.config.is_square)
         print("MEEE z is: " + str(self.z))
         print("MEEE G_var: " + str(self.G_var))
 
@@ -187,7 +187,7 @@ class Trainer(object):
 
         d_out, self.D_z, self.D_var = DiscriminatorCNN(
                 tf.concat([G, x], 0), self.channel, self.z_num, self.repeat_num,
-                self.conv_hidden_num, self.data_format)
+                self.conv_hidden_num, self.data_format, is_square=self.config.is_square)
         AE_G, AE_x = tf.split(d_out, 2)
         print("d_out: " + str(d_out))
         print("AE_G: " + str(AE_G) + " AE_x: " +  str(AE_x))
@@ -259,7 +259,7 @@ class Trainer(object):
             self.z_r_update = tf.assign(self.z_r, self.z)
 
         G_z_r, _ = GeneratorCNN(
-                self.z_r, self.conv_hidden_num, self.channel, self.repeat_num, self.data_format, reuse=True)
+                self.z_r, self.conv_hidden_num, self.channel, self.repeat_num, self.data_format, reuse=True, is_square=self.config.is_square)
 
         with tf.variable_scope("test") as vs:
             self.z_r_loss = tf.reduce_mean(tf.abs(self.x - G_z_r))
