@@ -181,6 +181,7 @@ class Trainer(object):
                 self.z, self.conv_hidden_num, self.channel,
                 self.repeat_num, self.data_format, reuse=False)
         print("MEEE z is: " + str(self.z))
+        print("MEEE G_var: " + str(self.G_var))
 
         print("build model MEEE G: " + str(G) + " x: " + str(x))
 
