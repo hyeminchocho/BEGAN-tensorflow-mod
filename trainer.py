@@ -210,7 +210,6 @@ class Trainer(object):
                 self.ConvWeights = var
             if var.name == "G/Conv_1/weights":
                 self.Conv1Weights = var
-        if self.ConvWeights != null:
 
 
         print("MEE reduce passed")
@@ -234,6 +233,10 @@ class Trainer(object):
             tf.summary.image("G", self.G),
             tf.summary.image("AE_G", self.AE_G),
             tf.summary.image("AE_x", self.AE_x),
+
+            # MEE Visualize Kernels
+            tf.summary.image(self.ConvWeights.name, put_kernels_on_grid(self.ConvWeights))
+            tf.summary.image(self.Conv1Weights.name, put_kernels_on_grid(self.Conv1Weights))
 
             tf.summary.scalar("loss/d_loss", self.d_loss),
             tf.summary.scalar("loss/d_loss_real", self.d_loss_real),
