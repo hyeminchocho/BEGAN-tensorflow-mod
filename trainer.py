@@ -203,13 +203,13 @@ class Trainer(object):
         g_optimizer, d_optimizer = optimizer(self.g_lr), optimizer(self.d_lr)
 
         # Kernels
-        self.ConvWeights = None
-        self.Conv1Weights = None
-        for var in self.G_var:
-            if var.name == "G/Conv/weights":
-                self.ConvWeights = var
-            if var.name == "G/Conv_1/weights":
-                self.Conv1Weights = var
+        # self.ConvWeights = None
+        # self.Conv1Weights = None
+        # for var in self.G_var:
+        #     if var.name == "G/Conv/weights":
+        #         self.ConvWeights = var
+        #     if var.name == "G/Conv_1/weights":
+        #         self.Conv1Weights = var
         print("MEEE conv weights: " + str(self.ConvWeights) + " conv1: " + str(self.Conv1Weights))
 
 
@@ -311,7 +311,7 @@ class Trainer(object):
             z_r_loss, _ = self.sess.run([self.z_r_loss, self.z_r_optim], {self.x: tf_real_batch})
         z = self.sess.run(self.z_r)
 
-        print("MEEE z in interp: " + z)
+        print("MEEE z in interp: " + str(z))
 
         z1, z2 = z[:half_batch_size], z[half_batch_size:]
         real1_batch, real2_batch = real_batch[:half_batch_size], real_batch[half_batch_size:]
