@@ -359,10 +359,13 @@ class Trainer(object):
             x = self.sess.run(self.G, {self.z: z})
             if prev_counter == None:
                 counter = idx
-                save_one_image(x[0,:, :,:], "./interps/interp_{}_{}_G.jpg".format(timestamp, counter))
             else:
                 counter = prev_counter + idx
-                save_one_image(x[0,:, :,:], "./interps/interp_{}_{}_G.jpg".format(timestamp, counter))
+            if counter == 0:
+                post_script = "s"
+            else:
+                post_script = ""
+            save_one_image(x[0,:, :,:], "./interps/interp_{}_{}_G{}.jpg".format(timestamp, counter, post_script))
 
         return counter
             # z_decode = self.generate(z, save=False)
