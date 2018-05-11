@@ -314,6 +314,7 @@ class Trainer(object):
     def interpolate_G(self, real_batch, step=0, root_path='.', train_epoch=0):
         batch_size = len(real_batch)
         half_batch_size = int(batch_size/2)
+        print("MEEE in terp G real_batch: " + str(real_batch))
 
         self.sess.run(self.z_r_update)
         tf_real_batch = to_nchw_numpy(real_batch)
