@@ -402,6 +402,7 @@ class Trainer(object):
         root_path = "./"
         step = 333
         z_fixed = np.random.uniform(-1, 1, size=(self.batch_size, self.z_num))
+        print("MEE in gen interp G z_fixed shape: " + str(z_fixed.shape))
         G_z = self.generate(z_fixed, path=os.path.join(root_path, "interp_{}_G.png".format(step)))
 
         self.interpolate_G(G_z, step, root_path)
