@@ -39,7 +39,8 @@ def main(config):
         print("MEEE load_path check error: " + config.load_path)
         # trainer.test()
         # trainer.generate_interpolation_G()
-        trainer.interpolate_one_G()
+        # trainer.interpolate_one_G()
+        trainer.interpolate_many_G(5)
 
 if __name__ == "__main__":
     config, unparsed = get_config()
