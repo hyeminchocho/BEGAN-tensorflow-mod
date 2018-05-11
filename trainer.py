@@ -346,12 +346,14 @@ class Trainer(object):
         save_image(batch_generated, os.path.join(root_path, 'test{}_interp_G.png'.format(step)), nrow=10)
 
     def interpolate_one_G(self):
+        fps = 20
         z1 = np.random.uniform(-1, 1, size=(1, self.z_num))
         z2 = np.random.uniform(-1, 1, size=(1, self.z_num))
-        for idx, ratio in enumerate(np.linspace(0, 1, 10)):
+        date_str = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        for idx, ratio in enumerate(np.linspace(0, 1, fps)):
             z = np.stack([slerp(ratio, r1, r2) for r1, r2 in zip(z1, z2)])
             x = self.sess.run(self.G, {self.z: z})
-            save_one_image(x[0,:, :,:], "./interp_{}_G.jpg".format(idx))
+            save_one_image(x[0,:, :,:], "./interps/interp_{}_{}_G.jpg".format(date_str, idx))
             # z_decode = self.generate(z, save=False)
             # generated.append(z_decode)
 
