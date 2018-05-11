@@ -326,7 +326,7 @@ class Trainer(object):
         for idx, ratio in enumerate(np.linspace(0, 1, 10)):
             z = np.stack([slerp(ratio, r1, r2) for r1, r2 in zip(z1, z2)])
             z_decode = self.generate(z, save=False)
-            bah = self.generate(z, root_path=self.model_dir+'/Gen_by_one', save=True, save_by_one=True) # MEEE
+            bah = self.generate(z, root_path=self.model_dir, save=True, save_by_one=True) # MEEE
             generated.append(z_decode)
 
         generated = np.stack(generated).transpose([1, 0, 2, 3, 4])
