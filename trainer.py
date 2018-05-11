@@ -350,7 +350,7 @@ class Trainer(object):
         z1 = np.random.uniform(-1, 1, size=(1, self.z_num))
         z2 = np.random.uniform(-1, 1, size=(1, self.z_num))
         date_str = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        interpolate_one_G_helper(z1, z2, fps, date_str)
+        self.interpolate_one_G_helper(z1, z2, fps, date_str)
 
     def interpolate_one_G_helper(self, z1, z2, fps, timestamp):
         for idx, ratio in enumerate(np.linspace(0, 1, fps)):
@@ -368,7 +368,7 @@ class Trainer(object):
         for i in range(num):
             z1 = z2 # Update inter vars
             z2 = np.random.uniform(-1, 1, size=(1, self.z_num))
-            interpolate_one_G_helper(z1, z2, fps, date_str)
+            self.interpolate_one_G_helper(z1, z2, fps, date_str)
 
 
     def interpolate_D(self, real1_batch, real2_batch, step=0, root_path="."):
