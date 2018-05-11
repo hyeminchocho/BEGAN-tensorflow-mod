@@ -352,11 +352,19 @@ class Trainer(object):
         date_str = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         self.interpolate_one_G_helper(z1, z2, fps, date_str)
 
-    def interpolate_one_G_helper(self, z1, z2, fps, timestamp):
+    def interpolate_one_G_helper(self, z1, z2, fps, timestamp, prev_counter=None):
+        counter = 0
         for idx, ratio in enumerate(np.linspace(0, 1, fps)):
             z = np.stack([slerp(ratio, r1, r2) for r1, r2 in zip(z1, z2)])
             x = self.sess.run(self.G, {self.z: z})
-            save_one_image(x[0,:, :,:], "./interps/interp_{}_{}_G.jpg".format(timestamp, idx))
+            if prev_counter == None:
+                counter = idx
+                save_one_image(x[0,:, :,:], "./interps/interp_{}_{}_G.jpg".format(timestamp, counter))
+            else:
+                counter = prev_counter + idx
+                save_one_image(x[0,:, :,:], "./interps/interp_{}_{}_G.jpg".format(timestamp, counter))
+
+        return counter
             # z_decode = self.generate(z, save=False)
             # generated.append(z_decode)
 
@@ -365,10 +373,11 @@ class Trainer(object):
         z1 = np.random.uniform(-1, 1, size=(1, self.z_num))
         z2 = np.random.uniform(-1, 1, size=(1, self.z_num))
         date_str = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        counter = 0
         for i in range(num):
             z1 = z2 # Update inter vars
             z2 = np.random.uniform(-1, 1, size=(1, self.z_num))
-            self.interpolate_one_G_helper(z1, z2, fps, date_str)
+            counter = self.interpolate_one_G_helper(z1, z2, fps, date_str, prev_counter=counter)
 
 
     def interpolate_D(self, real1_batch, real2_batch, step=0, root_path="."):
