@@ -395,10 +395,11 @@ class Trainer(object):
 
     def generate_interpolation_G(self):
         root_path = "./"
+        step = 333
         z_fixed = np.random.uniform(-1, 1, size=(self.batch_size, self.z_num))
-        G_z = self.generate(z_fixed, path=os.path.join(root_path, "test{}_G_z.png".format(step)))
+        G_z = self.generate(z_fixed, path=os.path.join(root_path, "interp_{}_G.png".format(step)))
 
-        self.interpolate_G(G_z, 333, root_path)
+        self.interpolate_G(G_z, step, root_path)
 
     def get_image_from_loader(self):
         x = self.data_loader.eval(session=self.sess)
