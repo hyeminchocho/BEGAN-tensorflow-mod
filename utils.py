@@ -82,6 +82,6 @@ def save_image(tensor, filename, nrow=8, padding=2,
     im = Image.fromarray(ndarr)
     im.save(filename)
 
-def save_one_image(tensor, filename):
-    im = Image.fromarray(tensor.eval())
+def save_one_image(arr, filename):
+    im = Image.fromarray(arr)
     im.save(filename)
