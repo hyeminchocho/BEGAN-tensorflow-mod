@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import datetime
 import os
 try:
     from StringIO import StringIO
@@ -268,13 +269,20 @@ class Trainer(object):
         test_variables = tf.contrib.framework.get_variables(vs)
         self.sess.run(tf.variables_initializer(test_variables))
 
-    def generate(self, inputs, root_path=None, path=None, idx=None, save=True):
+    def generate(self, inputs, root_path=None, path=None, idx=None, save=True, save_by_one=True):
         x = self.sess.run(self.G, {self.z: inputs})
         if path is None and save:
             path = os.path.join(root_path, '{}_G.png'.format(idx))
-            save_image(x, path)
-            print("[*] Samples saved: {}".format(path))
+            if save_by_one:
+                now = datetime.datetime.now()
+                path = os.path.join(root_path, '{}_{}_G.png'.format(now.isoformat(), idx))
+                print("MEEE x in generate: " + str(x.shape))
+            else:
+                save_image(x, path)
+                print("[*] Samples saved: {}".format(path))
+
         return x
+
 
     def autoencode(self, inputs, path, idx=None, x_fake=None):
         items = {
@@ -327,6 +335,15 @@ class Trainer(object):
         all_img_num = np.prod(generated.shape[:2])
         batch_generated = np.reshape(generated, [all_img_num] + list(generated.shape[2:]))
         save_image(batch_generated, os.path.join(root_path, 'test{}_interp_G.png'.format(step)), nrow=10)
+
+    def interpolate_one_G(self):
+        r1 = np.random.uniform(-1, 1, size=(self.batch_size, self.z_num))
+        r2 = np.random.uniform(-1, 1, size=(self.batch_size, self.z_num))
+        z = np.stack([slerp(ratio, r1, r2) for r1, r2 in zip(z1, z2)])
+        z_decode = self.generate(z, save=False)
+        generated.append(z_decode)
+
+
 
     def interpolate_D(self, real1_batch, real2_batch, step=0, root_path="."):
         real1_encode = self.encode(real1_batch)
