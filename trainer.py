@@ -393,6 +393,12 @@ class Trainer(object):
 
         save_image(all_G_z, '{}/all_G_z.png'.format(root_path), nrow=16)
 
+    def generate_interpolation_G(self):
+        z_fixed = np.random.uniform(-1, 1, size=(self.batch_size, self.z_num))
+        G_z = self.generate(z_fixed, path=os.path.join(root_path, "test{}_G_z.png".format(step)))
+
+        self.interpolate_G(G_z, 333, "./")
+
     def get_image_from_loader(self):
         x = self.data_loader.eval(session=self.sess)
         print("MEEE Before transpose: " + str(x.shape))
