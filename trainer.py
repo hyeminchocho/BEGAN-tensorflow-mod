@@ -269,7 +269,7 @@ class Trainer(object):
         test_variables = tf.contrib.framework.get_variables(vs)
         self.sess.run(tf.variables_initializer(test_variables))
 
-    def generate(self, inputs, root_path=None, path=None, idx=None, save=True, save_by_one=True):
+    def generate(self, inputs, root_path=None, path=None, idx=None, save=True, save_by_one=False):
         x = self.sess.run(self.G, {self.z: inputs})
         if path is None and save:
             path = os.path.join(root_path, '{}_G.png'.format(idx))
@@ -326,6 +326,8 @@ class Trainer(object):
         for idx, ratio in enumerate(np.linspace(0, 1, 10)):
             z = np.stack([slerp(ratio, r1, r2) for r1, r2 in zip(z1, z2)])
             z_decode = self.generate(z, save=False)
+            # MEEE
+            bah = self.generate(z, save=True, save_by_one=True)
             generated.append(z_decode)
 
         generated = np.stack(generated).transpose([1, 0, 2, 3, 4])
