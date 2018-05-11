@@ -239,7 +239,7 @@ class Trainer(object):
             tf.summary.image("AE_x", self.AE_x),
 
             # MEE Visualize Kernels
-            tf.summary.image(self.ConvWeights.name, put_kernels_on_grid(tf.transpose(self.ConvWeights, perm=[0, 1, 3, 2]), max_outputs=1),
+            tf.summary.image(self.ConvWeights.name, put_kernels_on_grid(tf.transpose(self.ConvWeights, perm=[0, 1, 3, 2]), max_outputs=1)),
             # tf.summary.image(self.Conv1Weights.name, put_kernels_on_grid(self.Conv1Weights), max_outputs=1)
 
             tf.summary.scalar("loss/d_loss", self.d_loss),
