@@ -271,6 +271,7 @@ class Trainer(object):
 
     def generate(self, inputs, root_path=None, path=None, idx=None, save=True, save_by_one=False):
         x = self.sess.run(self.G, {self.z: inputs})
+        print("MEEE in generate print self.z shape: " + str(self.z.shape))
         if path is None and save:
             path = os.path.join(root_path, '{}_G.png'.format(idx))
             if save_by_one:
