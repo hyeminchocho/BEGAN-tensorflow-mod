@@ -38,6 +38,7 @@ def main(config):
             raise Exception("[!] You should specify `load_path` to load a pretrained model")
         print("MEEE load_path check error: " + config.load_path)
         trainer.test()
+        trainer.generate_interpolation_G()
 
 if __name__ == "__main__":
     config, unparsed = get_config()
