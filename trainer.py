@@ -14,7 +14,7 @@ from itertools import chain
 from collections import deque
 
 from models import *
-from utils import save_image
+from utils import save_image, save_one_image
 
 def next(loader):
     return loader.next()[0].data.numpy()
