@@ -15,6 +15,7 @@ from collections import deque
 
 from models import *
 from utils import save_image, save_one_image
+from math import sqrt
 
 def next(loader):
     return loader.next()[0].data.numpy()
