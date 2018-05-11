@@ -346,11 +346,14 @@ class Trainer(object):
         save_image(batch_generated, os.path.join(root_path, 'test{}_interp_G.png'.format(step)), nrow=10)
 
     def interpolate_one_G(self):
-        r1 = np.random.uniform(-1, 1, size=(self.batch_size, self.z_num))
-        r2 = np.random.uniform(-1, 1, size=(self.batch_size, self.z_num))
-        z = np.stack([slerp(ratio, r1, r2) for r1, r2 in zip(z1, z2)])
-        z_decode = self.generate(z, save=False)
-        generated.append(z_decode)
+        r1 = np.random.uniform(-1, 1, size=(1, self.z_num))
+        r2 = np.random.uniform(-1, 1, size=(1, self.z_num))
+        for idx, ratio in enumerate(np.linspace(0, 1, 10)):
+            z = np.stack([slerp(ratio, r1, r2) for r1, r2 in zip(z1, z2)])
+            x = self.sess.run(self.G, {self.z: inputs})
+            save_one_image(x[0,:, :,:], "./interp_{}_G.jpg".format(idx))
+            # z_decode = self.generate(z, save=False)
+            # generated.append(z_decode)
 
 
 
