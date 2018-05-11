@@ -323,10 +323,14 @@ class Trainer(object):
 
         z1, z2 = z[:half_batch_size], z[half_batch_size:]
         real1_batch, real2_batch = real_batch[:half_batch_size], real_batch[half_batch_size:]
+        print("MEEE in interp G z shape: " + str(z.shape))
+        print("MEEE in interp G z1 shape: " + str(z1.shape) + " z2 shape: " + str(z2.shape))
+
 
         generated = []
         for idx, ratio in enumerate(np.linspace(0, 1, 10)):
             z = np.stack([slerp(ratio, r1, r2) for r1, r2 in zip(z1, z2)])
+            print("MEEE z after slerp shape: " + str(z.shape))
             z_decode = self.generate(z, save=False)
             bah = self.generate(z, root_path=self.model_dir, save=True, save_by_one=True) # MEEE
             generated.append(z_decode)
