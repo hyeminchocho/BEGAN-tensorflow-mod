@@ -85,7 +85,7 @@ def save_image(tensor, filename, nrow=8, padding=2,
     im.save(filename)
 
 def save_one_image(arr, filename):
-    convert_arr = np.uint8(arr*255)
+    convert_arr = np.uint8(arr)
     print("MEEE arr: " + str(convert_arr.shape))
     print("MEEE arr type: " + str(type(convert_arr)))
     im = Image.fromarray(convert_arr)
