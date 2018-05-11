@@ -80,7 +80,7 @@ def save_image(tensor, filename, nrow=8, padding=2,
     ndarr = make_grid(tensor, nrow=nrow, padding=padding,
                             normalize=normalize, scale_each=scale_each)
     print("MEEE save image ndarr type: " + str(type(ndarr)))
-    print("MEEE save image ndarr type: " + str(ndarr.shape)))
+    print("MEEE save image ndarr type: " + str(ndarr.shape))
     im = Image.fromarray(ndarr)
     im.save(filename)
 
