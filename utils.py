@@ -79,14 +79,10 @@ def save_image(tensor, filename, nrow=8, padding=2,
                normalize=False, scale_each=False):
     ndarr = make_grid(tensor, nrow=nrow, padding=padding,
                             normalize=normalize, scale_each=scale_each)
-    print("MEEE save image ndarr type: " + str(type(ndarr)))
-    print("MEEE save image ndarr type: " + str(ndarr.shape))
     im = Image.fromarray(ndarr)
     im.save(filename)
 
 def save_one_image(arr, filename):
     convert_arr = np.uint8(arr)
-    print("MEEE arr: " + str(convert_arr.shape))
-    print("MEEE arr type: " + str(type(convert_arr)))
     im = Image.fromarray(convert_arr)
     im.save(filename)
