@@ -209,10 +209,10 @@ class Trainer(object):
         self.Conv1Weights = None
         for var in self.G_var:
             print("MEEE G_var name: " + var.name)
-            if var.name == "G/Conv/weights:0":
+            if var.name == "G/Conv_8/weights:0":
                 self.ConvWeights = var
-            if var.name == "G/Conv_1/weights:0":
-                self.Conv1Weights = var
+            # if var.name == "G/Conv_1/weights:0":
+            #     self.Conv1Weights = var
         print("MEEE conv weights: " + str(self.ConvWeights) + " conv1: " + str(self.Conv1Weights))
 
 
