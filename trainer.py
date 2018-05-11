@@ -275,8 +275,8 @@ class Trainer(object):
             path = os.path.join(root_path, '{}_G.png'.format(idx))
             if save_by_one:
                 now = datetime.datetime.now()
-                path = os.path.join(root_path, '{}_single_G.png'.format(idx))
                 for i in range(x.shape[0]):
+                    path = os.path.join(root_path, '{}_single_G.png'.format(i))
                     save_one_image(x[i, :, :, :], path)
                 print("MEEE x in generate: " + str(x.shape))
             else:
