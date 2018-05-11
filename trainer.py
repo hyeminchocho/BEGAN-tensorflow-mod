@@ -204,14 +204,15 @@ class Trainer(object):
         g_optimizer, d_optimizer = optimizer(self.g_lr), optimizer(self.d_lr)
 
         # Kernels
-        # self.ConvWeights = None
-        # self.Conv1Weights = None
-        # for var in self.G_var:
-        #     if var.name == "G/Conv/weights":
-        #         self.ConvWeights = var
-        #     if var.name == "G/Conv_1/weights":
-        #         self.Conv1Weights = var
-        # print("MEEE conv weights: " + str(self.ConvWeights) + " conv1: " + str(self.Conv1Weights))
+        self.ConvWeights = None
+        self.Conv1Weights = None
+        for var in self.G_var:
+            print("MEEE G_var name: " + var.name)
+            if var.name == "G/Conv/weights":
+                self.ConvWeights = var
+            if var.name == "G/Conv_1/weights":
+                self.Conv1Weights = var
+        print("MEEE conv weights: " + str(self.ConvWeights) + " conv1: " + str(self.Conv1Weights))
 
 
         print("MEE reduce passed")
