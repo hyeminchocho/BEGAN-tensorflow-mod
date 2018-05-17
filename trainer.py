@@ -233,23 +233,10 @@ class Trainer(object):
             self.k_update = tf.assign(
                 self.k_t, tf.clip_by_value(self.k_t + self.lambda_k * self.balance, 0, 1))
 
-        self.summary_op = tf.summary.merge([
+        summaries = [
             tf.summary.image("G", self.G),
             tf.summary.image("AE_G", self.AE_G),
             tf.summary.image("AE_x", self.AE_x),
-
-            # MEE Visualize Kernels
-            # tf.summary.image(self.ConvWeights.name, put_kernels_on_grid(tf.transpose(self.ConvWeights, perm=[0, 1, 3, 2])), max_outputs=1),
-            # tf.summary.image(self.Conv1Weights.name, put_kernels_on_grid(self.Conv1Weights), max_outputs=1)
-            for var in self.G_var:
-                print("MEEE G_var name: " + var.name)
-                if "weights" in var.name:
-                    print("MEEE summary: " + str(var.name.shape))
-                    tf.summary.image(var.name, put_kernels_on_grid(tf.transpose(var, perm=[0, 1, 3, 2])), max_outputs=1),
-                    # tf.summary.image(var.name, put_kernels_on_grid(var), max_outputs=1)
-                # if var.name == "G/Conv_1/weights:0":
-                #     self.Conv1Weights = var
-
             tf.summary.scalar("loss/d_loss", self.d_loss),
             tf.summary.scalar("loss/d_loss_real", self.d_loss_real),
             tf.summary.scalar("loss/d_loss_fake", self.d_loss_fake),
@@ -259,7 +246,36 @@ class Trainer(object):
             tf.summary.scalar("misc/d_lr", self.d_lr),
             tf.summary.scalar("misc/g_lr", self.g_lr),
             tf.summary.scalar("misc/balance", self.balance),
-        ])
+        ]
+
+        for var in self.G_var:
+            print("MEEE G_var name: " + var.name)
+            if "weights" in var.name:
+                print("MEEE summary: " + str(var.name.shape))
+                summaries.append(tf.summary.image(var.name, put_kernels_on_grid(tf.transpose(var, perm=[0, 1, 3, 2])), max_outputs=1))
+                # tf.summary.image(var.name, put_kernels_on_grid(var), max_outputs=1)
+            # if var.name == "G/Conv_1/weights:0":
+            #     self.Conv1Weights = var
+
+        self.summary_op = tf.summary.merge(summaries)
+        #     tf.summary.image("G", self.G),
+        #     tf.summary.image("AE_G", self.AE_G),
+        #     tf.summary.image("AE_x", self.AE_x),
+        #
+        #     # MEE Visualize Kernels
+        #     # tf.summary.image(self.ConvWeights.name, put_kernels_on_grid(tf.transpose(self.ConvWeights, perm=[0, 1, 3, 2])), max_outputs=1),
+        #     # tf.summary.image(self.Conv1Weights.name, put_kernels_on_grid(self.Conv1Weights), max_outputs=1)
+        #
+        #     tf.summary.scalar("loss/d_loss", self.d_loss),
+        #     tf.summary.scalar("loss/d_loss_real", self.d_loss_real),
+        #     tf.summary.scalar("loss/d_loss_fake", self.d_loss_fake),
+        #     tf.summary.scalar("loss/g_loss", self.g_loss),
+        #     tf.summary.scalar("misc/measure", self.measure),
+        #     tf.summary.scalar("misc/k_t", self.k_t),
+        #     tf.summary.scalar("misc/d_lr", self.d_lr),
+        #     tf.summary.scalar("misc/g_lr", self.g_lr),
+        #     tf.summary.scalar("misc/balance", self.balance),
+        # ])
 
     def build_test_model(self):
         with tf.variable_scope("test") as vs:
