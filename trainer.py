@@ -215,10 +215,14 @@ class Trainer(object):
             #     self.Conv1Weights = var
         print("MEEE conv weights: " + str(self.ConvWeights) + " conv1: " + str(self.Conv1Weights))
 
+        self.DConv = None
+        self.DConv_25 = None
         for var in self.D_var:
             print("MEEE D_var name: " + var.name + " shape: " + str(var.shape))
-            if var.name == "G/Conv_10/weights:0":
-                self.ConvWeights = var
+            if var.name == "D/Conv/weights:0":
+                self.DConv = var
+            if var.name == "D/Conv_25/weights:0":
+                self.DConv_25 = var
             # if var.name == "G/Conv_1/weights:0":
             #     self.Conv1Weights = var
 
@@ -272,6 +276,8 @@ class Trainer(object):
 
             # MEE Visualize Kernels
             tf.summary.image(self.ConvWeights.name, put_kernels_on_grid(tf.transpose(self.ConvWeights, perm=[0, 1, 3, 2])), max_outputs=1),
+            tf.summary.image(self.DConv.name, put_kernels_on_grid(self.DConv), max_outputs=1),
+            tf.summary.image(self.DConv_25.name, put_kernels_on_grid(tf.transpose(self.DConv_25, perm=[0, 1, 3, 2])), max_outputs=1),
             # tf.summary.image(self.Conv1Weights.name, put_kernels_on_grid(self.Conv1Weights), max_outputs=1)
 
             tf.summary.scalar("loss/d_loss", self.d_loss),
