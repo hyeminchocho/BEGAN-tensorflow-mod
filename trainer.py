@@ -364,7 +364,9 @@ class Trainer(object):
             else:
                 counter = prev_counter + idx
             if counter == 0:
-                post_script = "_s"
+                # post_script = "_s"
+                post_script = ""
+                # post_script = "_s"
             else:
                 post_script = ""
             save_one_image(x[0,:, :,:], "./interps/interp_{}_{:03d}_G{}.jpg".format(timestamp, counter, post_script))
