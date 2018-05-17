@@ -348,7 +348,7 @@ class Trainer(object):
         save_image(batch_generated, os.path.join(root_path, 'test{}_interp_G.png'.format(step)), nrow=10)
 
     def interpolate_one_G(self):
-        fps = 20
+        fps = 30
         z1 = np.random.uniform(-1, 1, size=(1, self.z_num))
         z2 = np.random.uniform(-1, 1, size=(1, self.z_num))
         date_str = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -362,6 +362,8 @@ class Trainer(object):
             if prev_counter == None:
                 counter = idx
             else:
+                if counter == 0:
+                    continue
                 counter = prev_counter + idx
             if counter == 0:
                 # post_script = "_s"
@@ -376,7 +378,7 @@ class Trainer(object):
             # generated.append(z_decode)
 
     def interpolate_many_G(self, num):
-        fps = 20
+        fps = 30
         z1 = np.random.uniform(-1, 1, size=(1, self.z_num))
         z2 = np.random.uniform(-1, 1, size=(1, self.z_num))
         date_str = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
