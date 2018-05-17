@@ -264,7 +264,8 @@ class Trainer(object):
         #     # if var.name == "G/Conv_1/weights:0":
         #     #     self.Conv1Weights = var
 
-        self.summary_op = tf.summary.merge(summaries)
+        # self.summary_op = tf.summary.merge(summaries)
+        self.summary_op = tf.summary.merge([
             tf.summary.image("G", self.G),
             tf.summary.image("AE_G", self.AE_G),
             tf.summary.image("AE_x", self.AE_x),
