@@ -362,9 +362,9 @@ class Trainer(object):
             if prev_counter == None:
                 counter = idx
             else:
-                # if idx == 0:
-                #     print("Continue in interp G helper")
-                #     continue
+                if idx == 0:
+                    print("Continue in interp G helper")
+                    continue
                 counter = prev_counter + idx
             if counter == 0:
                 # post_script = "_s"
