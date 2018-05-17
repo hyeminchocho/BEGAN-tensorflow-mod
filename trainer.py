@@ -251,7 +251,7 @@ class Trainer(object):
         for var in self.G_var:
             print("MEEE G_var name: " + var.name)
             if "weights" in var.name:
-                print("MEEE summary: " + str(var.name.shape))
+                print("MEEE summary: " + str(var.shape))
                 summaries.append(tf.summary.image(var.name, put_kernels_on_grid(tf.transpose(var, perm=[0, 1, 3, 2])), max_outputs=1))
                 # tf.summary.image(var.name, put_kernels_on_grid(var), max_outputs=1)
             # if var.name == "G/Conv_1/weights:0":
