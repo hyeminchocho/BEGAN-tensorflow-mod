@@ -373,6 +373,7 @@ class Trainer(object):
             else:
                 post_script = ""
             filename = "./interps/interp_{}_{:03d}_G{}.jpg".format(timestamp, counter, post_script)
+            print("In interp save filename: " + filename)
             save_one_image(x[0,:, :,:], filename)
 
         return counter
