@@ -363,6 +363,7 @@ class Trainer(object):
                 counter = idx
             else:
                 if counter == 0:
+                    print("Continue in interp G helper")
                     continue
                 counter = prev_counter + idx
             if counter == 0:
@@ -371,7 +372,8 @@ class Trainer(object):
                 # post_script = "_s"
             else:
                 post_script = ""
-            save_one_image(x[0,:, :,:], "./interps/interp_{}_{:03d}_G{}.jpg".format(timestamp, counter, post_script))
+            filename = "./interps/interp_{}_{:03d}_G{}.jpg".format(timestamp, counter, post_script)
+            save_one_image(x[0,:, :,:], filename)
 
         return counter
             # z_decode = self.generate(z, save=False)
