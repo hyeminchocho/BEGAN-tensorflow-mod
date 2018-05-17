@@ -362,9 +362,9 @@ class Trainer(object):
             if prev_counter == None:
                 counter = idx
             else:
-                if idx == 0:
-                    print("Continue in interp G helper")
-                    continue
+                # if idx == 0:
+                #     print("Continue in interp G helper")
+                #     continue
                 counter = prev_counter + idx
             if counter == 0:
                 # post_script = "_s"
@@ -385,7 +385,7 @@ class Trainer(object):
         z1 = np.random.uniform(-1, 1, size=(1, self.z_num))
         z2 = np.random.uniform(-1, 1, size=(1, self.z_num))
         date_str = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        counter = 0
+        counter = None
         for i in range(num):
             z1 = z2 # Update inter vars
             z2 = np.random.uniform(-1, 1, size=(1, self.z_num))
