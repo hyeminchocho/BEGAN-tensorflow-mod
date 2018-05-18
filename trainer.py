@@ -268,8 +268,8 @@ class Trainer(object):
                 elif var.shape == (3, 3, 128 ,3):
                     summaries.append(tf.summary.image(var.name, put_kernels_on_grid(tf.transpose(var, perm=[0, 1, 3, 2])), max_outputs=1))
                 else:
-                    print("MEEE print var kernel: " + str(var[:, :, 0, :]))
-                    summaries.append(tf.summary.image(var.name, put_kernels_on_grid(var[:, :, 0, :]), max_outputs=1))
+                    print("MEEE print var kernel: " + str(var[:, :, :3, :]))
+                    summaries.append(tf.summary.image(var.name, put_kernels_on_grid(var[:, :, :3, :]), max_outputs=1))
 
                 # tf.summary.image(var.name, put_kernels_on_grid(var), max_outputs=1)
             # if var.name == "G/Conv_1/weights:0":
