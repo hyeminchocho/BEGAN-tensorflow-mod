@@ -463,6 +463,26 @@ class Trainer(object):
             img = np.concatenate([[real1_batch[idx]], img, [real2_batch[idx]]], 0)
             save_image(img, os.path.join(root_path, 'test{}_interp_D_{}.png'.format(step, idx)), nrow=10 + 2)
 
+    def random_interpolate_D(self):
+        real1_batch = self.get_image_from_loader()
+        real2_batch = self.get_image_from_loader()
+        random_interpolate_D_helper(real1_batch, real2_batch)
+
+    def random_interpolate_D_helper(self, real1_batch, real2_batch, step=0, root_path="."):
+        real1_encode = self.encode(real1_batch)
+        real2_encode = self.encode(real2_batch)
+
+        decodes = []
+        for idx, ratio in enumerate(np.linspace(0, 1, 10)):
+            z = np.stack([slerp(ratio, r1, r2) for r1, r2 in zip(real1_encode, real2_encode)])
+            z_decode = self.decode(z)
+            decodes.append(z_decode)
+
+        decodes = np.stack(decodes).transpose([1, 0, 2, 3, 4])
+        for idx, img in enumerate(decodes):
+            img = np.concatenate([[real1_batch[idx]], img, [real2_batch[idx]]], 0)
+            save_image(img, os.path.join(root_path, 'test{}_interp_D_{}.png'.format(step, idx)), nrow=10 + 2)
+
     def test(self):
         root_path = "./" #self.model_dir # was "./"
 

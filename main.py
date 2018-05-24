@@ -28,7 +28,13 @@ def main(config):
     data_loader = get_loader(
             data_path, config.batch_size, config.input_scale_size,
             config.data_format, config.split, is_square=config.is_square)
+
+    one_data_loader = get_loader(
+            data_path, 1, config.input_scale_size,
+            config.data_format, config.split, is_square=config.is_square)
+
     trainer = Trainer(config, data_loader)
+    one_trainer = Trainer(config, one_data_loader)
 
     if config.is_train:
         save_config(config)
@@ -40,7 +46,8 @@ def main(config):
         # trainer.test()
         # trainer.generate_interpolation_G()
         # trainer.interpolate_one_G()
-        trainer.interpolate_many_G(30)
+        # trainer.interpolate_many_G(30)
+        one_trainer.random_interpolate_D()
 
 if __name__ == "__main__":
     config, unparsed = get_config()
