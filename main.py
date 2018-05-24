@@ -47,7 +47,8 @@ def main(config):
         # trainer.generate_interpolation_G()
         # trainer.interpolate_one_G()
         # trainer.interpolate_many_G(30)
-        one_trainer.random_interpolate_D()
+        # one_trainer.random_interpolate_D()
+        trainer.random_interpolate_D()
 
 if __name__ == "__main__":
     config, unparsed = get_config()
